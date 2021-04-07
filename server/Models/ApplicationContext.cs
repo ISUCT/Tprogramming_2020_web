@@ -14,8 +14,8 @@ namespace Server.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {modelBuilder.Entity<Product>().HasData(
-                new Product {Id = 1, Name = "Demo", Price = 200},
-                new Product {Id = 2, Name = "Demo1", Price = 300}
+                new Product {Id = 1, Name = "Demo", Price = 200, Description = "descr"},
+                new Product {Id = 2, Name = "Demo1", Price = 300, Description = "Long description"}
             );
             
         }
