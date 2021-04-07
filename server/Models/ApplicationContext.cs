@@ -11,5 +11,13 @@ namespace Server.Models
             System.Console.WriteLine("Test");
             var created = Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {modelBuilder.Entity<Product>().HasData(
+                new Product {Id = 1, Name = "Demo", Price = 200},
+                new Product {Id = 2, Name = "Demo1", Price = 300}
+            );
+            
+        }
     }
 }
