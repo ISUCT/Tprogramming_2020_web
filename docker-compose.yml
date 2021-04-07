@@ -3,22 +3,22 @@ services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
-      - 1434:1433
+      - 3433:1433
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Secret1234
     volumes:
       - tprogData:/var/opt/mssql
 
-  server:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: isuct/sample-dot-net
-    ports:
-      - 8000:80
-    depends_on: 
-      - mssql
+  # server:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   image: isuct/sample-dot-net
+  #   ports:
+  #     - 8001:80
+  #   depends_on: 
+  #     - mssql
 
 volumes:
   tprogData:
