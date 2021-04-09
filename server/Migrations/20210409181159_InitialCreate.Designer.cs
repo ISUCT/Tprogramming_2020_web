@@ -9,7 +9,7 @@ using Server.Models;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210407134820_InitialCreate")]
+    [Migration("20210409181159_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace Server.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Product", b =>
+            modelBuilder.Entity("Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,10 +30,45 @@ namespace Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "First"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Second"
+                        });
+                });
+
+            modelBuilder.Entity("Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
 
@@ -41,15 +76,35 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
+                            Description = "descr",
                             Name = "Demo",
                             Price = 200m
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
+                            Description = "Long description",
                             Name = "Demo1",
                             Price = 300m
                         });
+                });
+
+            modelBuilder.Entity("Product", b =>
+                {
+                    b.HasOne("Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

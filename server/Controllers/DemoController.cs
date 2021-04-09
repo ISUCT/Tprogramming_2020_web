@@ -50,6 +50,26 @@ namespace Server.Controllers
             return Ok(product);
         }
 
+        [HttpPut("{id}")]
+        public ActionResult<Product> Put(int id, Product product)
+        {
+            if (product == null)
+            {
+                return BadRequest();
+            }
+
+            var productInDb = db.Products.FirstOrDefault(x => x.Id == id);
+            if (productInDb == null)
+            {
+                return NotFound();
+            }
+            productInDb.Name = product.Name;
+            productInDb.Description = product.Description;
+            productInDb.Price = product.Price;
+            db.SaveChanges();
+            return Ok(product);
+        }
+
         [HttpDelete("{id}")]
         public ActionResult<Product> Delete(int id)
         {
